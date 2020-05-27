@@ -46,7 +46,6 @@ public class PaymentService {
         Map<CustomerType,String> responses = new HashMap<>();
         responses.put(CustomerType.PLATINUM,"SOME_GIFT_WORTH_50");
         responses.put(CustomerType.GOLD,"SOME_GIFT_WORTH_30");
-
         return responses.containsKey(customerType)?responses.get(customerType):"SOME_GIFT_WORTH_10";
 
 
@@ -75,8 +74,8 @@ public class PaymentService {
         Map<DiscountType, Rule<Double>> rules = createRules(priceOfProducts,totalProducts);
 
         return Stream.of(DiscountType.values())
-                .filter(discountType -> rules.get(discountType).isApplicable())
-                .map(discountType -> rules.get(discountType).applyProcess())
+                .filter(discountType -> rules.get(discountType).condition.get())
+                .map(discountType -> rules.get(discountType).process.get())
                 .findFirst()
                 .orElse(null);
 
@@ -112,8 +111,8 @@ public class PaymentService {
     }
 
 
-    public  Rule<Double> createRule(Supplier<Boolean> rule, Supplier<Double> supplier) {
-        return new Rule<>(rule,supplier);
+    public  Rule<Double> createRule(Supplier<Boolean> condition, Supplier<Double> process) {
+        return new Rule<>(condition,process);
     }
 
     public Double calculatePrice(List<Product> products){

@@ -34,21 +34,27 @@ public class PaymentService {
     }
 
 
-    //Based on rules  & Calculated Result
+    //Based on rules  & Calculate Price and apply discount
     public Double calculatePriceAndApplyDiscount(List<Product> products){
 
         Double priceOfProducts =  calculatePrice(products);
         int totalProducts = products.size();
 
         //if number of products greater than 15 apply 10% discount
-        if(totalProducts > 15 )
-            return priceOfProducts - (priceOfProducts * (10.0/100));
-        else if(totalProducts > 5 && totalProducts <15)
+        if(totalProducts > 15 ) {
+            double tenPercent = priceOfProducts * (10.0 / 100);
+            return priceOfProducts - tenPercent;
+        } else if(totalProducts > 5 && totalProducts <15)
             //if number of products greater than 5 apply 5% discount overall
-            return priceOfProducts - (priceOfProducts * (5.0/100));
-        else
+        {
+            double fivePercent = priceOfProducts * (5.0 / 100);
+            return priceOfProducts - fivePercent;
+        } else
             //else apply 1 % discount
-            return priceOfProducts - (priceOfProducts * (1.0/100));
+        {
+            double onePercent = priceOfProducts * (1.0 / 100);
+            return priceOfProducts - onePercent;
+        }
 
 
     }
